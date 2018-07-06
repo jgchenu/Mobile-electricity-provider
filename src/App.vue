@@ -10,8 +10,10 @@ export default {
 }
 </script>
 
-<style>
-#app {
-
+<style lang="scss">
+@import './assets/style/variable.scss';
+#app{
+  background-color: $BgColor;
 }
 </style>
+
