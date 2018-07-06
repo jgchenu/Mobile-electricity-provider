@@ -53,6 +53,27 @@
         </div>
       </div>
 
+      <div class="floor">
+        <div class="floor-anomaly">
+          <div class="floor-one floor-item">
+            <img :src="floor1_0.image" width="100%">
+          </div>
+          <div class="floor-item">
+            <div class="floor-two">
+            <img :src="floor1_1.image" width="100%">
+            </div>
+            <div class="floor-two">
+            <img :src="floor1_2.image" width="100%">
+            </div>
+          </div>
+        </div>
+        <div class="floor-rule">
+          <div v-for="(item,index) in floor1.slice(1)" :key="index">
+            <img :src="item.image" width="100%">
+          </div>
+        </div>
+      </div>
+
   </div>
 </template>
 <script>
@@ -65,15 +86,19 @@ export default {
   },
   data() {
     return {
-      swiperOptions:{
-        slidesPerView:3
+      swiperOptions: {
+        slidesPerView: 3
       },
       msg: "Shopping Mall",
       locationIcon: require("../../assets/images/location.png"),
       bannerPicArr: [],
       category: [],
       adBanner: "",
-      recommend: []
+      recommendGoods: [],
+      floor1: [],
+      floor1_0: {},
+      floor1_1: {},
+      floor1_2: {}
     };
   },
   created() {
@@ -88,6 +113,10 @@ export default {
           this.adBanner = res.data.data.advertesPicture.PICTURE_ADDRESS;
           this.bannerPicArr = res.data.data.slides;
           this.recommendGoods = res.data.data.recommend;
+          this.floor1 = res.data.data.floor1;
+          this.floor1_0 = this.floor1[0];
+          this.floor1_1 = this.floor1[1];
+          this.floor1_2 = this.floor1[2];
         }
       })
       .catch(err => {
@@ -104,21 +133,25 @@ export default {
     background-color: $IndexColor;
     line-height: 2.2rem;
     overflow: hidden;
+    .search-input {
+      width: 100%;
+      height: 1.3rem;
+      border: none;
+      border-bottom: 1px solid #ffffff;
+      background-color: $IndexColor;
+      color: #ffffff;
+    }
+    .location-icon {
+      width: 1.6rem;
+      height: 1.6rem;
+      padding-top: 0.2rem;
+      padding-left: 0.3rem;
+    }
+    .search-button {
+      margin-left: 0.5rem;
+    }
   }
-  .search-input {
-    width: 100%;
-    height: 1.3rem;
-    border: none;
-    border-bottom: 1px solid #ffffff;
-    background-color: $IndexColor;
-    color: #ffffff;
-  }
-  .location-icon {
-    width: 1.6rem;
-    height: 1.6rem;
-    padding-top: 0.2rem;
-    padding-left: 0.3rem;
-  }
+
   .swiper-area {
     clear: both;
     max-height: 12rem;
@@ -157,6 +190,38 @@ export default {
         border-right: 1px solid #eee;
         font-size: 12px;
         text-align: center;
+      }
+    }
+  }
+  .floor {
+    .floor-anomaly {
+      display: flex;
+      flex-direction: row;
+      background-color: #fff;
+      border-bottom: 1px solid #ddd;
+      .floor-item {
+        width: 10rem;
+        box-sizing: border-box;
+      }
+      .floor-one {
+        border-right: 1px solid #ddd;
+      }
+      .floor-two {
+        border-bottom: 1px solid #ddd;
+      }
+    }
+    .floor-rule {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      background-color: #fff;
+      div{
+        box-sizing: border-box;
+        width: 10rem;
+        border-bottom: 1px solid #ddd;
+        &:nth-of-type(odd){
+          border-right: 1px solid #ddd;
+        }
       }
     }
   }
