@@ -46,31 +46,27 @@
               <div class="recommend-item">
                 <img :src="item.image" width="80%">
                 <div>{{item.goodsName}}</div>
-                <div>￥{{item.price}}</div>
+                <div>￥{{item.price|moneyFilter}}(￥{{item.mallPrice|moneyFilter}})</div>
               </div>
             </swiper-slide>
           </swiper>
         </div>
       </div>
 
-      <div class="floor">
-        <div class="floor-anomaly">
-          <div class="floor-one floor-item">
-            <img :src="floor1_0.image" width="100%">
-          </div>
-          <div class="floor-item">
-            <div class="floor-two">
-            <img :src="floor1_1.image" width="100%">
-            </div>
-            <div class="floor-two">
-            <img :src="floor1_2.image" width="100%">
-            </div>
-          </div>
-        </div>
-        <div class="floor-rule">
-          <div v-for="(item,index) in floor1.slice(1)" :key="index">
-            <img :src="item.image" width="100%">
-          </div>
+      <floorComponent :floorData="floor1" :floorTitle="floorName.floor1"></floorComponent>
+      <floorComponent :floorData="floor2" :floorTitle="floorName.floor2"></floorComponent>
+      <floorComponent :floorData="floor3" :floorTitle="floorName.floor3"></floorComponent>
+
+      <div class="hot-area">
+        <div class="hot-title">热卖商品</div>
+        <div class="hot-goods">
+          <van-list>
+            <van-row gutter="20">
+              <van-col span="12" v-for="(item,index) in hotGoods" :key="index">
+                <goodsInfoComponent :goodsImage="item.image" :goodsName="item.name" :goodsPrice="item.price"></goodsInfoComponent>
+              </van-col>
+            </van-row>
+          </van-list>
         </div>
       </div>
 
@@ -79,10 +75,15 @@
 <script>
 import "swiper/dist/css/swiper.css";
 import { swiper, swiperSlide } from "vue-awesome-swiper";
+import floorComponent from "../component/floorComponent";
+import goodsInfoComponent from "../component/goodsInfoComponent";
+import { toMoney } from "../filter/moneyFilter.js";
 export default {
   components: {
     swiper,
-    swiperSlide
+    swiperSlide,
+    floorComponent,
+    goodsInfoComponent
   },
   data() {
     return {
@@ -96,10 +97,16 @@ export default {
       adBanner: "",
       recommendGoods: [],
       floor1: [],
-      floor1_0: {},
-      floor1_1: {},
-      floor1_2: {}
+      floor2: [],
+      floor3: [],
+      floorName: {},
+      hotGoods: []
     };
+  },
+  filters: {
+    moneyFilter(money) {
+      return toMoney(money);
+    }
   },
   created() {
     this.$axios({
@@ -114,9 +121,10 @@ export default {
           this.bannerPicArr = res.data.data.slides;
           this.recommendGoods = res.data.data.recommend;
           this.floor1 = res.data.data.floor1;
-          this.floor1_0 = this.floor1[0];
-          this.floor1_1 = this.floor1[1];
-          this.floor1_2 = this.floor1[2];
+          this.floor2 = res.data.data.floor2;
+          this.floor3 = res.data.data.floor3;
+          this.floorName = res.data.data.floorName;
+          this.hotGoods = res.data.data.hotGoods;
         }
       })
       .catch(err => {
@@ -193,37 +201,11 @@ export default {
       }
     }
   }
-  .floor {
-    .floor-anomaly {
-      display: flex;
-      flex-direction: row;
-      background-color: #fff;
-      border-bottom: 1px solid #ddd;
-      .floor-item {
-        width: 10rem;
-        box-sizing: border-box;
-      }
-      .floor-one {
-        border-right: 1px solid #ddd;
-      }
-      .floor-two {
-        border-bottom: 1px solid #ddd;
-      }
-    }
-    .floor-rule {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
-      background-color: #fff;
-      div{
-        box-sizing: border-box;
-        width: 10rem;
-        border-bottom: 1px solid #ddd;
-        &:nth-of-type(odd){
-          border-right: 1px solid #ddd;
-        }
-      }
-    }
+  .hot-area {
+    text-align: center;
+    font-size: 14px;
+    height: 1.8rem;
+    line-height: 1.8rem;
   }
 }
 </style>
