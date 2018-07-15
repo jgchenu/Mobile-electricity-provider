@@ -6,11 +6,13 @@ const {
 } = require('./database/init.js')
 const mongoose = require('mongoose')
 const Router = require('koa-router')
+const bodyParser = require('koa-bodyparser')
+const cors=require('koa2-cors')
 let user = require('./appApi/user')
 let home = require('./appApi/home')
 
-
-
+app.use(bodyParser())
+app.use(cors())
 //装载所有子路由
 let router = new Router;
 router.use('/user', user.routes())
