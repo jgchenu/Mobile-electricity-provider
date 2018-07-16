@@ -3,6 +3,7 @@ const LOCALURL='http://localhost:3000/'
 const URL = {
   getShoppingMallInfo: BASEURl + 'index', //商城首页所有信息
   getGoodsInfo: BASEURl + 'getGoodsInfo',
-  registerUser:LOCALURL+'user/register'
+  registerUser:LOCALURL+'user/register',
+  login:LOCALURL+'user/login'
 }
 module.exports = URL;
