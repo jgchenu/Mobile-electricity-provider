@@ -35,7 +35,26 @@ router.get('/insertAllcategory', async (ctx) => {
         saveCount++;
         console.log('插入成功' + saveCount)
       }).catch((err) => {
-        console.log('插入失败',err)
+        console.log('插入失败', err)
+      })
+    })
+  })
+  ctx.body = '开始导入数据'
+
+})
+router.get('/insertAllcategorySub', async (ctx) => {
+  fs.readFile('./dataJson/category_sub.json', 'utf-8', function (err, data) {
+    data = JSON.parse(data)
+    let saveCount = 0;
+    const CategorySub = mongoose.model('CategorySub')
+    data.RECORDS.map((value, index) => {
+      console.log(value)
+      let newCategorySub = new CategorySub(value)
+      newCategorySub.save().then(() => {
+        saveCount++
+        console.log('插入成功' + saveCount)
+      }).catch((err) => {
+        console.log('插入失败', err)
       })
     })
   })
