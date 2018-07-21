@@ -7,9 +7,10 @@ const {
 const mongoose = require('mongoose')
 const Router = require('koa-router')
 const bodyParser = require('koa-bodyparser')
-const cors=require('koa2-cors')
+const cors = require('koa2-cors')
 let user = require('./appApi/user')
 let home = require('./appApi/home')
+let goods = require('./appApi/goods')
 
 app.use(bodyParser())
 app.use(cors())
@@ -17,6 +18,8 @@ app.use(cors())
 let router = new Router;
 router.use('/user', user.routes())
 router.use('/home', home.routes())
+router.use('/goods', goods.routes())
+
 //加载路由中间件
 app.use(router.routes())
 app.use(router.allowedMethods())
